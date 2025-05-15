@@ -4,7 +4,7 @@ from typing import Literal
 from typing import Union, List, Optional, Any, Dict, Tuple
 
 from jinja2 import Environment, FileSystemLoader
-from pydantic import Field
+from pydantic.v1 import Field
 
 from .constants import LevelEnum, DisplayModeEnum, SizeEnum, TabsModeEnum
 from .types import API, Expression, AmisNode, SchemaNode, Template, BaseAmisModel, OptionsNode, Tpl
@@ -44,7 +44,7 @@ class Remark(AmisNode):
     """形状"""
     placement: str = None
     """弹出位置"""
-    trigger: Union[str,List[str]] = ['hover', 'focus']
+    trigger: Union[str, List[str]] = ['hover', 'focus']
     """触发条件 ['hover','focus']"""
     icon: str = "fa fa-question-circle"
     """图标"""
@@ -52,13 +52,13 @@ class Remark(AmisNode):
 
 class Badge(AmisNode):
     """角标"""
-    mode: Literal["dot","text","ribbon"] = "dot"
+    mode: Literal["dot", "text", "ribbon"] = "dot"
     """角标类型，可以是 dot/text/ribbon"""
     text: Union[str, int] = None
     """角标文案，支持字符串和数字，在mode='dot'下设置无效"""
     size: int = None
     """角标大小"""
-    level: Literal["info","success","warning","danger"] = None
+    level: Literal["info", "success", "warning", "danger"] = None
     """角标级别, 可以是info/success/warning/danger, 设置之后角标背景颜色不同"""
     overflowCount: int = 99
     """设置封顶的数字值"""
@@ -138,7 +138,7 @@ class Page(AmisNode):
             site_title: str = 'Amis',
             site_icon: str = '',
             theme: str = 'default',
-            routerModel:str = 'createHashHistory',
+            routerModel: str = 'createHashHistory',
             requestAdaptor: str = '',
             responseAdaptor: str = '',
 
@@ -161,7 +161,7 @@ class Page(AmisNode):
                 'site_icon': site_icon,
                 'theme_css': theme_css,
                 'theme_name': theme_name,
-                'routerModel':routerModel,
+                'routerModel': routerModel,
                 'requestAdaptor': requestAdaptor,
                 'responseAdaptor': responseAdaptor
             }
@@ -237,7 +237,8 @@ class Flex(AmisNode):
     justify: Literal[
         "start", "flex-start", "center", "end", "flex-end", "space-around", "space-between", "space-evenly"] = None
     """start", "flex-start", "center", "end", "flex-end", "space-around", "space-between", "space-evenly"""
-    alignItems: Literal["stretch", "start", "flex-start", "flex-end", "end", "center", "baseline"] = None
+    alignItems: Literal["stretch", "start", "flex-start",
+                        "flex-end", "end", "center", "baseline"] = None
     """stretch", "start", "flex-start", "flex-end", "end", "center", "baseline"""
     style: dict = None
     """自定义样式"""
@@ -554,7 +555,7 @@ class Action(AmisNode):
     actionType: Literal[
         "ajax", "link", "url", "drawer", "dialog", "confirm", "cancel", "prev", "next", "copy", "close", "reload"] = None
     """这是 action 最核心的配置，来指定该 action 的作用类型，支持：ajax、link、url、drawer、dialog、confirm、cancel、prev、next、copy、close、reload。"""
-    label: Union[str ,bool]= None
+    label: Union[str, bool] = None
     """按钮文本。可用 ${xxx} 取值。"""
     level: LevelEnum = LevelEnum.default
     """按钮样式，支持：link、primary、secondary、info、success、warning、danger、light、dark、default。"""
@@ -873,7 +874,7 @@ class ActionType:
 
 class PageSchema(AmisNode):
     """页面配置"""
-    label: Union[Literal[False], Template,str] = None
+    label: Union[Literal[False], Template, str] = None
     """菜单名称。"""
     icon: str = 'fa fa-flash'
     """菜单图标，比如：'fa fa-file'."""
@@ -908,7 +909,8 @@ class PageSchema(AmisNode):
     def as_tabs_item(self, tabs_extra: Dict[str, Any] = None, item_extra: Dict[str, Any] = None):
         if self.children:
             tab = Tabs(
-                tabs=[item.as_tabs_item(tabs_extra, item_extra) for item in self.children]
+                tabs=[item.as_tabs_item(tabs_extra, item_extra)
+                      for item in self.children]
             ).update_from_dict(tabs_extra or {})
         elif self.schema_:
             tab = self.schema_
@@ -1006,7 +1008,7 @@ class Breadcrumb(AmisNode):
     """面包屑"""
 
     class Item(AmisNode):
-        label: Union[Literal[False], Template,str] = None
+        label: Union[Literal[False], Template, str] = None
         """文本"""
         href: str = None
         """链接"""
@@ -1064,7 +1066,7 @@ class DropDownButton(AmisNode):
     """下拉菜单"""
     type: str = 'dropdown-button'
     """指定为 dropdown-button 渲染器"""
-    label: Union[Literal[False], Template,str] = None
+    label: Union[Literal[False], Template, str] = None
     """按钮文本"""
     className: str = None
     """外层 CSS 类名"""
@@ -1139,7 +1141,7 @@ class Nav(AmisNode):
     """导航"""
 
     class Link(AmisNode):
-        label: Union[Literal[False], Template,str] = None
+        label: Union[Literal[False], Template, str] = None
         """名称"""
         to: Template = None
         """链接地址"""
@@ -1210,7 +1212,7 @@ class AnchorNav(AmisNode):
     """锚点导航"""
 
     class Link(AmisNode):
-        label: Union[Literal[False], Template,str] = None
+        label: Union[Literal[False], Template, str] = None
         """名称"""
         title: str = None
         """区域 标题"""
@@ -1257,7 +1259,8 @@ class TooltipWrapper(AmisNode):
     """是否鼠标可以移入到浮层中"""
     disabled: bool = False
     """是否禁用浮层提示"""
-    trigger: Union[Literal["hover", "click", "focus"], List[Literal["hover", "click", "focus"]]] = "hover"
+    trigger: Union[Literal["hover", "click", "focus"],
+                   List[Literal["hover", "click", "focus"]]] = "hover"
     """浮层触发方式，支持数组写法["hover", "click"]"""
     mouseEnterDelay: int = 0
     """浮层延迟展示时间，单位 ms"""
@@ -1456,7 +1459,7 @@ class Form(AmisNode):
     """设置一个名字后，方便其他组件与其通信"""
     mode: DisplayModeEnum = DisplayModeEnum.normal
     """表单展示方式，可以是：normal、horizontal 或者 inline"""
-    horizontal: Horizontal = None #{"left": 2, "right": 10, "justify": False}
+    horizontal: Horizontal = None  # {"left": 2, "right": 10, "justify": False}
     """当 mode 为 horizontal 时有用
     用来控制 label {"left": "col-sm-2", "right": "col-sm-10","offset": "col-sm-offset-2"}
     """
@@ -1686,7 +1689,7 @@ class Checkboxes(FormItem):
     """选项组"""
     source: Union[str, API] = None
     """动态选项组"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """ 拼接符"""
     labelField: str = "label"
     """选项标签字段"""
@@ -1790,7 +1793,7 @@ class Combo(FormItem):
     """是否将结果扁平化(去掉 name),只有当 items 的 length 为 1 且 multiple 为 true 的时候才有效。"""
     joinValues: bool = True
     """默认为 true 当扁平化开启的时候，是否用分隔符的形式发送给后端，否则采用 array 的方式。"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """当扁平化开启并且 joinValues 为 true 时，用什么分隔符。"""
     addable: bool = False
     """是否可新增"""
@@ -1843,7 +1846,7 @@ class ConditionBuilder(FormItem):
     class Field(AmisNode):
         type: str = "text"
         """字段配置中配置成 "text"""
-        label: Union[Literal[False], Template,str] = None
+        label: Union[Literal[False], Template, str] = None
         """字段名称。"""
         placeholder: str = None
         """占位符"""
@@ -2027,7 +2030,7 @@ class InputFile(FormItem):
     """拼接值"""
     extractValue: bool = False
     """提取值"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """拼接符"""
     autoUpload: bool = True
     """否选择完就自动开始上传"""
@@ -2044,7 +2047,7 @@ class InputFile(FormItem):
     """文件的值用那个字段来标识。"""
     urlField: str = "url"
     """文件下载地址的字段名。"""
-    btnlabel: Union[Literal[False], Template,str] = None
+    btnlabel: Union[Literal[False], Template, str] = None
     """上传按钮的文字"""
     downloadUrl: Union[str, bool] = ""
     """
@@ -2145,7 +2148,7 @@ class InputTable(FormItem):
     """最大行数, 2.4.1版本后支持变量"""
     perPage: int = 10
     """设置一页显示多少条数据"""
-    columns: List= []
+    columns: List = []
     """列信息 columns[x].quickEdit: boolean|object = None 配合 editable 为 true 一起使用 columns[x].quickEditOnUpdate: boolean|object = None 可以用来区分新建模式和更新模式的编辑配置"""
 
 
@@ -2159,7 +2162,7 @@ class InputTag(FormItem):
     """选项提示"""
     source: Union[str, API] = None
     """动态选项组"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """拼接符"""
     labelField: str = "label"
     """选项标签字段"""
@@ -2179,7 +2182,8 @@ class InputTag(FormItem):
     """单个标签的最大文本长度"""
     maxTagCount: int = None
     """标签的最大展示数量，超出数量后以收纳浮层的方式展示，仅在多选模式开启后生效"""
-    overflowTagPopover: dict = {"placement": "top", "trigger": "hover", "showArrow": False, "offset": [0, -10]}
+    overflowTagPopover: dict = {
+        "placement": "top", "trigger": "hover", "showArrow": False, "offset": [0, -10]}
     """收纳浮层的配置属性，详细配置参考Tooltip"""
     enableBatchAdd: bool = False
     """	是否开启批量添加模式"""
@@ -2233,7 +2237,7 @@ class Group(InputGroup):
     """指定为 group 渲染器"""
     className: str = None
     """	CSS 类名"""
-    label: Union[Literal[False], Template,str] = None
+    label: Union[Literal[False], Template, str] = None
     """group 的标签"""
     mode: DisplayModeEnum = None
     """展示默认，同 Form 中的模式"""
@@ -2291,7 +2295,7 @@ class InputImage(FormItem):
     """拼接值"""
     extractValue: bool = False
     """提取值"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """拼接符"""
     autoUpload: bool = True
     """否选择完就自动开始上传"""
@@ -2378,7 +2382,7 @@ class NestedSelect(FormItem):
     """选项组"""
     source: Union[str, API] = None
     """动态选项组"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """拼接符"""
     labelField: str = "label"
     """选项标签字段"""
@@ -2452,7 +2456,7 @@ class Picker(FormItem):
     """动态选项组"""
     multiple: bool = None
     """是否为多选。"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """拼接符"""
     labelField: str = "label"
     """选项标签字段"""
@@ -2554,7 +2558,8 @@ class Static(FormItem):
 
 class InputText(FormItem):
     """输入框"""
-    type: Literal["input-text", "input-url", "input-email", "input-password"] = 'input-text'
+    type: Literal["input-text", "input-url",
+                  "input-email", "input-password"] = 'input-text'
     """指定为 input-text 渲染器 可选 input-text|input-url|input-email|input-password 渲染器"""
 
     class AddOn(AmisNode):
@@ -2573,7 +2578,7 @@ class InputText(FormItem):
     """自动补全"""
     multiple: bool = False
     """是否多选"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """拼接符"""
     labelField: str = "label"
     """选项标签字段"""
@@ -2713,7 +2718,8 @@ class Select(FormItem):
     """当展示形式为 associated 时用来配置右边的选择形式，可选：list、table、tree、chained。"""
     maxTagCount: int = None
     """标签的最大展示数量，超出数量后以收纳浮层的方式展示，仅在多选模式开启后生效"""
-    overflowTagPopover: dict = {"placement": "top", "trigger": "hover", "showArrow": False, "offset": [0, -10]}
+    overflowTagPopover: dict = {
+        "placement": "top", "trigger": "hover", "showArrow": False, "offset": [0, -10]}
     """收纳浮层的配置属性，详细配置参考Tooltip"""
     optionClassName: str = None
     """选项 CSS 类名"""
@@ -3011,7 +3017,7 @@ class InputRange(FormItem):
     """支持选择范围"""
     joinValues: bool = True
     """默认为 true，选择的 value 会通过 delimiter 连接起来，否则直接将以{min: 1, max: 100}的形式提交 前置条件：开启multiple时有效"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """分隔符"""
     unit: str = None
     """单位"""
@@ -3066,7 +3072,8 @@ class InputDatetimeRange(FormItem):
     """日期时间选择器显示格式"""
     placeholder: str = "请选择日期时间范围"
     """占位文本"""
-    ranges: Union[str, List[str]] = "yesterday,7daysago,prevweek,thismonth,prevmonth,prevquarter"
+    ranges: Union[str, List[str]
+                  ] = "yesterday,7daysago,prevweek,thismonth,prevmonth,prevquarter"
     """ 日期范围快捷键，"""
     minDate: str = None
     """限制最小日期时间，用法同 限制范围"""
@@ -3090,7 +3097,8 @@ class InputDateRange(FormItem):
     """日期时间选择器显示格式"""
     placeholder: str = "请选择日期范围"
     """占位文本"""
-    ranges: Union[str, List[str]] = "yesterday,7daysago,prevweek,thismonth,prevmonth,prevquarter"
+    ranges: Union[str, List[str]
+                  ] = "yesterday,7daysago,prevweek,thismonth,prevmonth,prevquarter"
     """ 日期范围快捷键，"""
     minDate: str = None
     """限制最小日期时间，用法同 限制范围"""
@@ -3258,7 +3266,7 @@ class Transfer(FormItem):
     """选项组"""
     source: Union[str, API] = None
     """动态选项组"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """拼接符"""
     joinValues: bool = True
     """拼接值"""
@@ -3278,7 +3286,8 @@ class Transfer(FormItem):
     """右侧结果的标题文字"""
     sortable: bool = False
     """结果可以进行拖拽排序"""
-    selectMode: Literal["list", "table", "tree", "chained", "associated"] = "list"
+    selectMode: Literal["list", "table", "tree",
+                        "chained", "associated"] = "list"
     """可选：list、table、tree、chained、associated。分别为：列表形式、表格形式、树形选择形式、级联选择形式，关联选择形式（与级联选择的区别在于，级联是无限极，而关联只有一级，关联左边可以是个 tree）。"""
     searchResultMode: str = None
     """如果不设置将采用 selectMode 的值，可以单独配置，参考 selectMode，决定搜索结果的展示形式。"""
@@ -3444,7 +3453,8 @@ class JSONSchemaEditor(FormItem):
     """顶级类型是否可配置"""
     showRootInfo: bool = False
     """是否显示顶级类型信息"""
-    disabledTypes: List[Literal['string', 'number', 'interger', 'object', 'number', 'array', 'boolean', 'null']] = None
+    disabledTypes: List[Literal['string', 'number', 'interger',
+                                'object', 'number', 'array', 'boolean', 'null']] = None
     """	用来禁用默认数据类型，默认类型有：string、number、interger、object、number、array、boolean、null"""
     definitions: dict = None
     """用来配置预设类型"""
@@ -3455,9 +3465,10 @@ class JSONSchemaEditor(FormItem):
 
 class ImageAction(AmisNode):
     """图片动作"""
-    key: Literal['rotateRight', 'rotateLeft', 'zoomIn', 'zoomOut', 'scaleOrigin'] = None
+    key: Literal['rotateRight', 'rotateLeft',
+                 'zoomIn', 'zoomOut', 'scaleOrigin'] = None
     """操作key"""
-    label: Union[Literal[False], Template,str] = None
+    label: Union[Literal[False], Template, str] = None
     """动作名称"""
     icon: str = None
     """动作图标"""
@@ -3527,7 +3538,7 @@ class Images(AmisNode):
     """图片数组"""
     source: str = None
     """数据源"""
-    delimiter: Union[str,bool] = ","
+    delimiter: Union[str, bool] = ","
     """分隔符，当 value 为字符串时，用该值进行分隔拆分"""
     src: str = None
     """预览图地址，支持数据映射获取对象中图片变量"""
@@ -3764,7 +3775,7 @@ class AmisList(AmisNode):
 
         class ListBodyField(AmisNode):
             """列配置"""
-            label: Union[Literal[False], Template,str] = None
+            label: Union[Literal[False], Template, str] = None
             """列标题"""
             className: str = None
             """外层DOM的CSS类名"""
@@ -3842,7 +3853,7 @@ class TableColumn(AmisNode):
     """是否可复制  boolean 或 {icon: string, content:string}"""
     sortable: bool = False
     """是否可排序"""
-    searchable: Union[bool, SchemaNode] =False
+    searchable: Union[bool, SchemaNode] = False
     """是否可快速搜索  boolean|Schema"""
     width: Union[str, int] = None
     """列宽"""
@@ -3974,7 +3985,7 @@ class TableView(AmisNode):
         """高度"""
         background: str = None
         """行背景色"""
-        tds: List[Union[Tds,dict]] = None
+        tds: List[Union[Tds, dict]] = None
 
     type: str = 'table-view'
     """指定为 table-view 渲染器"""
@@ -3982,7 +3993,8 @@ class TableView(AmisNode):
     """行配置"""
     width: Union[int, str] = "100%"
     """宽度"""
-    padding: Union[int, str] = 'var(--TableCell-paddingY) var(--TableCell-paddingX)'
+    padding: Union[int,
+                   str] = 'var(--TableCell-paddingY) var(--TableCell-paddingX)'
     """单元格默认内间距"""
     border: bool = True
     """是否显示边框"""
@@ -4010,9 +4022,10 @@ class Calendar(AmisNode):
 
     type: str = 'calendar'
     """指定为 calender 渲染器"""
-    schedules: List[Union[dict,Schedules]] = None
+    schedules: List[Union[dict, Schedules]] = None
     """日历中展示日程，可设置静态数据或从上下文中取数据，startTime 和 endTime 格式参考文档，className 参考背景色"""
-    scheduleClassNames: List[str] = ['bg-warning', 'bg-danger', 'bg-success', 'bg-info', 'bg-secondary']
+    scheduleClassNames: List[str] = [
+        'bg-warning', 'bg-danger', 'bg-success', 'bg-info', 'bg-secondary']
     """日历中展示日程的颜色，参考背景色"""
     scheduleAction: List[Action] = None
     """自定义日程展示"""
@@ -4332,7 +4345,8 @@ class Log(AmisNode):
     """设置每行高度，将会开启虚拟渲染"""
     maxLength: int = None
     """最大显示行数"""
-    operation: List[Literal['stop', 'clear', 'showLineNumber', 'filter']] = None
+    operation: List[Literal['stop', 'clear',
+                            'showLineNumber', 'filter']] = None
     """可选日志操作"""
 
 
@@ -4382,7 +4396,8 @@ class Progress(AmisNode):
     """背景是否显示条纹"""
     animated: bool = False
     """	type 为 line，可支持动画"""
-    map: Union[str, List[Union[str, dict]]] = ['bg-danger', 'bg-warning', 'bg-info', 'bg-success', 'bg-success']
+    map: Union[str, List[Union[str, dict]]] = ['bg-danger',
+                                               'bg-warning', 'bg-info', 'bg-success', 'bg-success']
     """进度颜色映射"""
     threshold: Union[dict, List[dict]] = None
     """阈值（刻度）"""
@@ -4859,7 +4874,8 @@ class Audio(AmisNode):
     """是否自动播放"""
     rates: List[float] = None
     """可配置音频播放倍速如：[1.0, 1.5, 2.0]"""
-    controls: List[Literal['rates', 'play', 'time', 'process', 'volume']] = None
+    controls: List[Literal['rates', 'play',
+                           'time', 'process', 'volume']] = None
     """内部模块定制化"""
 
 
@@ -4896,7 +4912,7 @@ class Status(AmisNode):
 
     class Source(AmisNode):
         """数据源"""
-        label: Union[Literal[False], Template,str] = None
+        label: Union[Literal[False], Template, str] = None
         """映射文本"""
         icon: str = None
         """映射图标"""
@@ -4923,7 +4939,7 @@ class Tasks(AmisNode):
     """任务操作集合"""
 
     class Item(AmisNode):
-        label: Union[Literal[False], Template,str] = None
+        label: Union[Literal[False], Template, str] = None
         """任务名称"""
         key: str = None
         """任务键值，请唯一区分"""

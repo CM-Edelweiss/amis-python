@@ -4,7 +4,7 @@ try:
     import ujson as json
 except ImportError:
     import json
-from pydantic import BaseModel, Extra
+from pydantic.v1 import BaseModel, Extra
 
 Expression = str
 Template = Union[str, "Tpl", dict]
@@ -78,7 +78,8 @@ class AmisAPI(BaseAmisModel):
     - 当 data 中包含文件时，自动会采用 form-data（multipart/form-data） 格式。
     - 当配置为 form 时为 application/x-www-form-urlencoded 格式
     """
-    qsOptions: Union[str, dict] ={ "arrayFormat": 'indices', "encodeValuesOnly": True }
+    qsOptions: Union[str, dict] = {
+        "arrayFormat": 'indices', "encodeValuesOnly": True}
     """
     - 当 dataType 为 form 或者 form-data 的时候有用
     - 具体参数请参考这里，默认设置为: { arrayFormat: 'indices', encodeValuesOnly: true }
