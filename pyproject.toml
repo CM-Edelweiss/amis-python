@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "amis-py"
+name = "amis-py-model"
 version = "1.0.0"
 description = "基于百度amis前端框架的python pydantic模型封装。"
 authors = ["CM-Edelweiss <2633668472@qq.com>"]
